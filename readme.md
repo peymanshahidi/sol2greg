@@ -9,7 +9,7 @@ the corresponding Gregorian calendar date in Stata datetime format.
 
 <br>
 
-##### Example: 
+#### Example: 
 Suppose variable `date` contains date entries under the Solar Hijri calendar format (e.g., `1390/6/1`). The following command generates a new variable `Greg_date` under the corresponding Gregorian calendar date format (e.g., `23aug2013` for `1390/6/1`):
 
 ```
@@ -18,9 +18,9 @@ sol2greg date, gen(Greg_date)
 
 *******************************************************************************
 #### Test Materials 
-To run the test materials for `sol2greg` take the following steps:
+To run the test materials following these steps:
 1. Move `sol2greg.ado` to your personal adopath directory (or use `main.do` to specify your personal settings).
-2. Change the global variable `root` to your `sol2greg` folder directory.
+2. Change the global variable `root` to reflect your `sol2greg` folder directory.
 3. Run `test_sol2greg.do`.
 
 
