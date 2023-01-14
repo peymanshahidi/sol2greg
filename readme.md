@@ -1,14 +1,15 @@
-# Instructions for "sol2greg" Stata command 
+# Instructions for "sol2greg" Stata Command 
 ### Author: Peyman Shahidi
 #### Last update: Jan 14, 2023
 
-
+*******************************************************************************
+#### Command Description
 This command takes input variables in Solar Hijri calendar date format and returns
 the corresponding Gregorian calendar date in Stata datetime format.
 
 <br>
 
-#### Example: 
+##### Example: 
 Suppose variable `date` contains date entries under the Solar Hijri calendar format (e.g., `1390/6/1`). The following command generates a new variable `Greg_date` under the corresponding Gregorian calendar date format (e.g., `23aug2013` for `1390/6/1`):
 
 ```
