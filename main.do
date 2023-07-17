@@ -1,18 +1,17 @@
 ********************************************************************************
-* Title:		main.do
-* Description:	Initiate test run for "sol2greg" command.
-* By:  			Peyman Shahidi
-* Date:			Oct 10, 2020
-				
+** Description:		   Initiate test run for "sol2greg" command
+** By:  						 Peyman Shahidi
+** File Name:						 main.do
+** Version Date:	  	    26 Tir 1402 - 17 July 2023
 ********************************************************************************
 
-* sol2greg folder path
-global root "/Users/peymansh/Dropbox/Personal/StataPackages/sol2greg"
-//global root "path to/sol2greg"
+** set working direcotry to the "sol2greg" folder path on your machine
+global root "path_to/sol2greg"
 global data "${root}"
 
 cd "${root}"
 adopath + "${root}" 
 
-*===============================================================================
-do test_sol2greg
+
+** run the "sol2greg" command test script
+do sol2greg_test
