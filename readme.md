@@ -46,7 +46,7 @@ To test the `sol2greg` command take the following steps:
 
 *******************************************************************************
 ## Acknowledgements
-Thanks are due to Hosein Joshaghani, who encouraged me to develop this command, and `d-learn.ir`, whose historical IRR to USD exchange rate dataset I have used for the test cases.
+Thanks are due to Hosein Joshaghani, who encouraged me to develop this command, and `d-learn.ir`, whose [historical IRR to USD exchange rate dataset](https://d-learn.ir/p/usd-price/) I have used for the test cases.
 
 
 *******************************************************************************
