@@ -1,14 +1,14 @@
-# Instructions for `sol2greg` Stata Command 
+# `sol2greg`: Solar Hijri to Gregorian Calendar Converter Stata Command 
 ### Developer: Peyman Shahidi
 #### Last updated: 28 Tir 1402 - 19 July 2023
 
 *******************************************************************************
-#### Command Description
+### Command Description
 The "sol2greg" command takes Solar Hijri date variable(s) as input and produces corresponding Gregorian calendar dates in Stata `%td` datetime format under a user-specified variable name.
 
 <br>
 
-##### Examples: 
+#### Examples:
 1. Suppose Solar Hijri date value `1390/6/1` is stored in variable `dateSolar` and one wants to obtain the corresponding Gregorian calendar date `23aug2013` under a new variable called `dateGreg` in Stata `%td` datetime format. The following command does this conversion:
 ```
 sol2greg dateSolar, gen(dateGreg)
@@ -18,7 +18,7 @@ sol2greg dateSolar, gen(dateGreg)
 sol2greg yearSolar monthSolar daySolar, gen(dateGreg)
 ```
 *******************************************************************************
-#### Test Materials 
+### Test Materials 
 To test the `sol2greg` command take the following steps:
 
 &nbsp;1. Move `sol2greg.ado` to your personal adopath directory (or use the `main.do` script to specify your personal settings).
@@ -29,6 +29,8 @@ To test the `sol2greg` command take the following steps:
 
 
 *******************************************************************************
+### Notes
+
 #### Note 1: 
 The `sol2greg` command can manage two types of inputs:
 
@@ -43,10 +45,10 @@ The Solar Hijri `year` must be a 4-digit number. This is intentional so that the
 
 
 *******************************************************************************
-#### Acknowledgements: 
+### Acknowledgements
 Thanks are due to Hosein Joshaghani, who encouraged me to develop this command, and `d-learn.ir`, whose historical IRR to USD exchange rate dataset I have used for the test cases.
 
 
 *******************************************************************************
-#### Contact
+### Contact
 For questions, comments, or feedbacks please contact me at: shahidi.peyman96@gmail.com
