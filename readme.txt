@@ -29,9 +29,9 @@ following command for conversion:
 Note 1: 
 The "sol2greg" command can manage two types of inputs:
 1. A single string variable in the "year/month/day" format (e.g., "1390/6/1") 
-   where the command is able to flexibly handle the following delimiters:
-   "/", "-", "+", ":",  "--", " " (white space).
-   For instance, "1390-6-1" and "1390:6+1" are treated similar to "1390/6/1".
+   where the command can flexibly handle `/`, `-`, `+`, `:`,  `--`, and 
+   " " (white space) as delimiters. For instance, "1390-6-1" and "1390:6+1" 
+   are both treated similar to "1390/6/1".
 2. Three separate variables in the (year, month, day) order. In this case 
    each input variable can be in either string or numeric format.
 
@@ -52,10 +52,15 @@ intentionally provided entries in such manner.
 
 *******************************************************************************
 To test the "sol2greg" command take the following steps:
-1. Move "sol2greg.ado" to your personal adopath directory.
-   (or use the "main.do" script to specify your personal settings)
-2. Change the global variable ${root} to your "sol2greg" folder directory.
-3. Run "sol2greg_test.do".
+1. Download (or clone) the project.
+2. Define global macro "root" to be the path of "sol2greg" folder on your 
+machine in the "sol2greg_test.do" script.
+3. Run the "sol2greg_test.do" script, which contains one example from each use case 
+of the command (single-variable input and three-variables input).
+
+P.S.: if you do not wish to change the adopath directory on your machine, you 
+should put the "sol2greg.ado" file in your personal adopath directory and 
+comment out "line 19" in the "sol2greg_test.do" script.
 
 
 *****************************************************************************

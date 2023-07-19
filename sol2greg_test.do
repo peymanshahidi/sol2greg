@@ -3,13 +3,23 @@
 **					  IRR to USD exchange rate provided by "d-learn.ir"
 **					   (available at: https://d-learn.ir/p/usd-price)
 ** By:							     Peyman Shahidi
-** Do-file Name:			       "sol2greg_test.do"
+** Do-file Name:			       "sol2greg_test.do"    
 ** Version Date:	  	       28 Tir 1402 - 19 July 2023
 ********************************************************************************
 clear all
 set more off
+global root "path_to/sol2greg"
+
+// set working direcotry to the "sol2greg" folder path on your machine
+cd "${root}"
+
+// set adopath directory to the "sol2greg" folder path on your machine. if you
+// have put the "sol2greg.ado" file in your personal adopath directory, you can
+// comment out line 19.
+adopath + "${root}" 
 
 
+********************** Solar Hijri to Gregorian conversion *********************
 *===============================================================================
 ** Use case #1: input is single variable in string format
 use "IRR_USD_exchangeRate", clear
@@ -27,7 +37,7 @@ gen original_dateGreg = date(dateGregorian, "YMD")
 format original_dateGreg %td
 gen flag = 1 if my_dateGreg == original_dateGreg
 count if missing(flag)
-// no missing values --> all observations are the same --> sanity check passed!
+// no missing values --> all observations are similar --> sanity check passed!
 
 
 *===============================================================================
@@ -53,4 +63,4 @@ gen original_dateGreg = date(dateGregorian, "YMD")
 format original_dateGreg %td
 gen flag = 1 if my_dateGreg == original_dateGreg
 count if missing(flag)
-// no missing values --> all observations are the same --> sanity check passed!
+// no missing values --> all observations are similar --> sanity check passed!
