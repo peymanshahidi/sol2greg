@@ -35,15 +35,15 @@ The Solar Hijri `year` must be a 4-digit number. This is intentional so that the
 
 *******************************************************************************
 ## Test Materials 
-To test the `sol2greg` command take the following steps:
+The `sol2greg_test.do` file contains one example for each use case of the command (single-variable input and three-variables input). To run the `sol2greg_test.do` script take the following steps:
 
-&nbsp;1. Download (or clone) the project.
+&nbsp;1. Download the project files.
 
-&nbsp;2. Define global macro `root` to be the path of `sol2greg` folder on your machine in the `sol2greg_test.do` script.
+&nbsp;2. Define global macro `root` in `line 11` of the script to be the path of `sol2greg` folder on your machine.
 
-&nbsp;3. Run the `sol2greg_test.do` script, which contains one example from each use case of the command (single-variable input and three-variables input).
+&nbsp;3. Run the script.
 
-P.S.: if you do not wish to change the adopath directory on your machine, you should put the `sol2greg.ado` file in your personal adopath directory and comment out `line 19` in the `sol2greg_test.do` script.
+P.S.: The `sol2greg_test.do` script changes the adopath direcotry in your machine to the path of `sol2greg` folder. If you do not wish to have this change made, you can put the `sol2greg.ado` file in your personal adopath directory and comment out `line 19` of the script.
 
 
 *******************************************************************************
