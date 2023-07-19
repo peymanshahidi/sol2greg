@@ -25,14 +25,6 @@ following command for conversion:
 > sol2greg yearSolar monthSolar daySolar, gen(dateGreg)
 
 
-*******************************************************************************
-To test the "sol2greg" command take the following steps:
-1. Move "sol2greg.ado" to your personal adopath directory.
-   (or use the "main.do" script to specify your personal settings)
-2. Change the global variable ${root} to your "sol2greg" folder directory.
-3. Run "sol2greg_test.do".
-
-
 *****************************************************************************
 Note 1: 
 The "sol2greg" command can manage two types of inputs:
@@ -56,6 +48,14 @@ values while others contain 2-digit year values (e.g., one observation in the
 form of "90/6/1" and another in the form of "1391/6/1") the command DOES NOT 
 return a syntax error. In the latter case, it is assumed that the user has 
 intentionally provided entries in such manner.
+
+
+*******************************************************************************
+To test the "sol2greg" command take the following steps:
+1. Move "sol2greg.ado" to your personal adopath directory.
+   (or use the "main.do" script to specify your personal settings)
+2. Change the global variable ${root} to your "sol2greg" folder directory.
+3. Run "sol2greg_test.do".
 
 
 *****************************************************************************
