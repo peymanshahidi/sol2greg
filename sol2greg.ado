@@ -1,53 +1,60 @@
 *******************************************************************************
 ** Description:    Conversion of Solar Hijri date to Gregorian date in Stata
 ** By:								   Peyman Shahidi
-** Ado-file Name:					    sol2greg.ado
-** Version Date:	  	         26 Tir 1402 - 17 July 2023
+** Ado-file Name:					   "sol2greg.ado"
+** Version Date:	  	          28 Tir 1402 - 19 July 2023
 *******************************************************************************
 *******************************************************************************
 ** The "sol2greg" command takes Solar Hijri date variable(s) as input and 
-** produces corresponding Gregorian calendar date variable in Stata datetime 
-** format (%td) under a user-specified variable name.
-*******************************************************************************
-*******************************************************************************
-** Note 1: 
-** The "sol2greg" command can handle two types of input formats:
-** (1) A single string variable in the "year/month/day" format (e.g., "1390/6/1") 
-**     where the command is able to handle the following types of delimiters:
-**     "/", "-", "+", ":",  "--", " " (white space). 
-**     For instance, "1390-6-1" and "1390:6+1" are treated similar to "1390/6/1".
-** (2) Three variables in the --year, month, day-- order. In this case each
-**     input variable can appear either in string or numeric format.
+** produces corresponding Gregorian calendar dates in Stata %td datetime format
+** under a user-specified variable name.
 **
-** Note 2:
-** The Solar Hijri "year" value must be a 4-digit number. Otherwise, the 
-** "sol2greg" command returns a syntax error. (e.g., for an input such as 
-** "90/6/1" the command returns a syntax error.) 
-** This is intentional, so that the user, rather than the program, makes the 
-** distinction between 13-- and 14-- values.
-*******************************************************************************
-*******************************************************************************
-** Use case examples:
+** Examples:
 **
-** Suppose Solar Hijri date value "1390/6/1" is stored in variable "dateSolar" 
+** 1. Suppose Solar Hijri date value "1390/6/1" is stored in variable "dateSolar" 
 ** and one wants to obtain the corresponding Gregorian calendar date "23aug2013" 
-** under a new variable called "dateGreg" in Stata %td datetime format. In this 
-** case the following command does the job:
+** under a new variable called "dateGreg" in Stata %td datetime format. The 
+** following command does this conversion:
 **
 **
 ** sol2greg dateSolar, gen(dateGreg)
 **
 **
-** Similarly, if the input Solar Hijri date value "1390/6/1" is provided under 
-** three separate variables "yearSolar" (1390), "monthSolar" (6), "daySolar" (1),
-** and the output is to be returned under "dateGreg", one shall use the 
-** following command:
+** 2. If the Solar Hijri input date value "1390/6/1" is stored in three separate
+** variables "yearSolar" (1390), "monthSolar" (6), "daySolar" (1), and the 
+** output is to be returned under a variable called "dateGreg", one can use the 
+** following command for conversion:
 **
 **
 ** sol2greg yearSolar monthSolar daySolar, gen(dateGreg)
 **
 **
 *******************************************************************************
+*******************************************************************************
+** Note 1: 
+** The "sol2greg" command can manage two types of inputs:
+** 1. A single string variable in the "year/month/day" format (e.g., "1390/6/1") 
+**    where the command is able to flexibly handle the following delimiters:
+**    "/", "-", "+", ":",  "--", " " (white space) 
+**    For instance, "1390-6-1" and "1390:6+1" are treated similar to "1390/6/1".
+** 2. Three separate variables in the (year, month, day) order. In this case 
+**    each input variable can be in either string or numeric format.
+**
+**
+** Note 2:
+** The Solar Hijri "year" must be a 4-digit number. This is intentional so that
+** the user, rather than the program, makes the distinction between 2-digit 
+** values corresponding to abbreviation of either 13-- or 14-- Solar Hijri years
+** (e.g., Solar Hijri year value "05" can correspond to either 1305 or 1405 in 
+** conventional use cases). If all inputs are given in a 2-digit format (e.g., 
+** "90/6/1" in the single-input use case of the program) the "sol2greg" command
+** returns a syntax error. However, if some observations contain 4-digit year
+** values while others contain 2-digit year values (e.g., one observation in the
+** form of "90/6/1" and another in the form of "1391/6/1") the command DOES NOT 
+** return a syntax error. In the latter case, it is assumed that the user has 
+** intentionally provided entries in such manner.
+*******************************************************************************
+
 program sol2greg
 		version 14.1
 		syntax varlist(min=1 max=3) [if/], gen(name)
@@ -122,9 +129,9 @@ quietly{
 		// display error if Solar Hijri year is not given in 4 digits
 		sum `sy'
 		if `r(max)' < 100 {
-			display as error "Solar Hijri year must be a 4-digit number" 
-			restore
-			exit 198
+				display as error "Solar Hijri year must be a 4-digit number" 
+				restore
+				exit 198
 		}
 		
 		

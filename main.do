@@ -1,8 +1,8 @@
 ********************************************************************************
-** Description:		   Initiate test run for "sol2greg" command
-** By:  						 Peyman Shahidi
-** File Name:						 main.do
-** Version Date:	  	    26 Tir 1402 - 17 July 2023
+** Description:			 Initiate test run for "sol2greg" command
+** By:  						      Peyman Shahidi
+** Do-file Name:				         "main.do"
+** Version Date:	  	          28 Tir 1402 - 19 July 2023
 ********************************************************************************
 
 ** set working direcotry to the "sol2greg" folder path on your machine
