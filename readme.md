@@ -4,7 +4,7 @@
 
 *******************************************************************************
 ## Command Description
-The "sol2greg" command takes Solar Hijri date variable(s) as input and produces corresponding Gregorian calendar dates in Stata `%td` datetime format under a user-specified variable name.
+The `sol2greg` command takes Solar Hijri date variable(s) as input and produces corresponding Gregorian calendar dates in Stata `%td` datetime format under a user-specified variable name.
 
 <br>
 
@@ -30,7 +30,7 @@ The `sol2greg` command can manage two types of inputs:
 <br>
 
 ### Note 2:
-The Solar Hijri `year` must be a 4-digit number. This is intentional so that the user, rather than the program, makes the distinction between 2-digit values corresponding to abbreviation of either 13-- or 14-- Solar Hijri years (e.g., Solar Hijri year value `05` can correspond to either 1305 or 1405 in conventional use cases). If all inputs are given in a 2-digit format (e.g., `90/6/1` in the single-input use case of the program) the `sol2greg` command returns a syntax error. However, if some observations contain 4-digit year values while others contain 2-digit year values (e.g., one observation in the form of `90/6/1` and another in the form of `1391/6/1`) the command DOES NOT return a syntax error. In the latter case, it is assumed that the user has intentionally provided entries in such manner.
+The Solar Hijri `year` must be a 4-digit number. This is intentional so that the user, rather than the program, makes the distinction between 2-digit values corresponding to abbreviation of either 13-- or 14-- Solar Hijri years (e.g., Solar Hijri year value `05` can correspond to either 1305 or 1405 in conventional use cases). If all inputs are given in a 2-digit format (e.g., `90/6/1` in the single-input use case of the program) the `sol2greg` command returns a syntax error. However, if some observations contain 4-digit year values while others contain 2-digit year values (e.g., one observation in the form of `90/6/1` and another in the form of `1391/6/1`) the command **DOES NOT** return a syntax error. In the latter case, it is assumed that the user has intentionally provided entries in such manner.
 
 
 *******************************************************************************
