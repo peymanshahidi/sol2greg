@@ -1,6 +1,6 @@
 # Stata Command for Solar Hijri to Gregorian Calendar Conversion
 #### Developed by Peyman Shahidi
-#### Last updated on 28 Tir 1402 - 19 July 2023
+#### Last updated on 29 Tir 1402 - 20 July 2023
 
 *******************************************************************************
 ## Command Description
@@ -23,7 +23,7 @@ sol2greg yearSolar monthSolar daySolar, gen(dateGreg)
 ### Note 1: 
 The `sol2greg` command can manage two types of inputs:
 
-&nbsp; 1. A single string variable in the `year/month/day` format (e.g., `1390/6/1`), where the command can flexibly handle `/`, `-`, `+`, `:`,  `--`, <code>&nbsp;</code> (white space) as delimiters. For instance, `1390-6-1` and `1390:6+1` are both treated similar to `1390/6/1`.
+&nbsp; 1. A single string variable in the `year/month/day` format (e.g., `1390/6/1`), where the command can flexibly handle `/`, `-`, `+`, `:`,  `--`, and <code>&nbsp;</code> (white space) as delimiters. For instance, `1390-6-1` and `1390:6+1` are both treated similar to `1390/6/1`.
 
 &nbsp; 2. Three separate variables in (`year`, `month`, `day`) order. In this case each input variable can be in either string or numeric format.
 
@@ -35,11 +35,11 @@ The Solar Hijri `year` must be a 4-digit number. This is intentional so that the
 
 *******************************************************************************
 ## Test Materials 
-The `sol2greg_test.do` file contains one example for each use case of the command (single-variable input and three-variables input). To run the `sol2greg_test.do` script take the following steps:
+The `sol2greg_test.do` file contains one example for each use case of the command (single- or three-variables input). To run the `sol2greg_test.do` script take the following steps:
 
-&nbsp;1. Download the project files.
+&nbsp;1. Download the `sol2greg` project files.
 
-&nbsp;2. Define global macro `root` in `line 11` of the script to be the path of `sol2greg` folder on your machine.
+&nbsp;2. Define global macro `root` in `line 11` of the `sol2greg_test.do` script to be the path of `sol2greg` folder on your machine.
 
 &nbsp;3. Run the script.
 
@@ -48,9 +48,9 @@ P.S.: The `sol2greg_test.do` script changes the adopath direcotry in your machin
 
 *******************************************************************************
 ## Acknowledgements
-Thanks are due to Hosein Joshaghani, who encouraged me to develop this command, and `d-learn.ir`, whose [historical IRR to USD exchange rate dataset](https://d-learn.ir/p/usd-price/) I have used for the test cases.
+Thanks are due to Hosein Joshaghani, who encouraged me to develop this command, and `d-learn.ir`, whose [historical IRR to USD exchange rate dataset](https://d-learn.ir/p/usd-price/) is used for the test materials.
 
 
 *******************************************************************************
 ## Contact
-For questions, comments, or feedbacks please contact me at: shahidi.peyman96@gmail.com
+For questions, comments, or feedbacks please contact me via shahidi.peyman96@gmail.com

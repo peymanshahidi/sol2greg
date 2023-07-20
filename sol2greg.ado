@@ -2,7 +2,7 @@
 ** Description:    Conversion of Solar Hijri date to Gregorian date in Stata
 ** By:								   Peyman Shahidi
 ** Ado-file Name:					   "sol2greg.ado"
-** Version Date:	  	          28 Tir 1402 - 19 July 2023
+** Version Date:	  	          29 Tir 1402 - 20 July 2023
 *******************************************************************************
 *******************************************************************************
 ** The "sol2greg" command takes Solar Hijri date variable(s) as input and 
@@ -94,10 +94,10 @@ quietly{
 		if "`varlist'" == "`1'" {
 			ds `varlist', has(type string)
 			
-			// display error if single input is not in %t* format
+			// display error if single input is not string
 			if "`r(varlist)'" != "`varlist'" {
 				display as error ///
-					"single Solar Hijri date variable must be in string format"
+					`"single Solar Hijri date input must be in string ("year/month/day") format"'
 				restore
 				exit 198
 			}
@@ -129,9 +129,9 @@ quietly{
 		// display error if Solar Hijri year is not given in 4 digits
 		sum `sy'
 		if `r(max)' < 100 {
-				display as error "Solar Hijri year must be a 4-digit number" 
-				restore
-				exit 198
+			display as error "Solar Hijri year must be a 4-digit number" 
+			restore
+			exit 198
 		}
 		
 		

@@ -4,7 +4,7 @@
 **					   (available at: https://d-learn.ir/p/usd-price)
 ** By:							     Peyman Shahidi
 ** Do-file Name:			       "sol2greg_test.do"    
-** Version Date:	  	       28 Tir 1402 - 19 July 2023
+** Version Date:	  	       29 Tir 1402 - 20 July 2023
 ********************************************************************************
 clear all
 set more off
@@ -41,7 +41,7 @@ count if missing(flag)
 
 
 *===============================================================================
-** Use case #2: input consists of three variables in string (or numeric) formats
+** Use case #2: input consists of three variables in string or numeric formats
 use "IRR_USD_exchangeRate", clear
 cap program drop sol2greg
 
