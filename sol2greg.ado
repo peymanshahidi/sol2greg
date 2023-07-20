@@ -12,7 +12,7 @@
 ** Examples:
 **
 ** 1. Suppose Solar Hijri date value "1390/6/1" is stored in variable "dateSolar" 
-** and one wants to obtain the corresponding Gregorian calendar date "23aug2013" 
+** and one wants to obtain the corresponding Gregorian calendar date "23aug2011" 
 ** under a new variable called "dateGreg" in Stata %td datetime format. The 
 ** following command does this conversion:
 **
@@ -37,22 +37,22 @@
 **    where the command is able to flexibly handle the following delimiters:
 **    "/", "-", "+", ":",  "--", " " (white space) 
 **    For instance, "1390-6-1" and "1390:6+1" are treated similar to "1390/6/1".
-** 2. Three separate variables in the (year, month, day) order. In this case 
-**    each input variable can be in either string or numeric format.
+** 2. Three separate variables in year, month, day order. In this case each
+**    input variable can be in either string or numeric format.
 **
 **
 ** Note 2:
-** The Solar Hijri "year" must be a 4-digit number. This is intentional so that
-** the user, rather than the program, makes the distinction between 2-digit 
-** values corresponding to abbreviation of either 13-- or 14-- Solar Hijri years
-** (e.g., Solar Hijri year value "05" can correspond to either 1305 or 1405 in 
-** conventional use cases). If all inputs are given in a 2-digit format (e.g., 
-** "90/6/1" in the single-input use case of the program) the "sol2greg" command
-** returns a syntax error. However, if some observations contain 4-digit year
-** values while others contain 2-digit year values (e.g., one observation in the
-** form of "90/6/1" and another in the form of "1391/6/1") the command DOES NOT 
-** return a syntax error. In the latter case, it is assumed that the user has 
-** intentionally provided entries in such manner.
+** The Solar Hijri "year" value must be a 4-digit number. This is intentional 
+** so that the user, rather than the program, makes the distinction between 
+** 2-digit abbreviations of 13-- or 14-- Solar Hijri years (e.g., Solar Hijri 
+** abbreviation "05" can correspond to either 1305 or 1405 in conventional use 
+** cases). If all inputs are given in a 2-digit format (e.g., "90/6/1" in the 
+** single-input use case of the program) the "sol2greg" command returns a syntax
+** error. However, if some observations contain 4-digit year values while others
+** contain 2-digit year values (e.g., one observation in the form of "90/6/1" 
+** and another in the form of "1391/6/1") the command DOES NOT return a syntax
+** error. In the latter case, it is assumed that the user has intentionally
+** provided entries in such manner.
 *******************************************************************************
 
 program sol2greg
