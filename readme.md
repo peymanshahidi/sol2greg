@@ -1,6 +1,6 @@
-# Stata Command for Solar Hijri to Gregorian Calendar Conversion
+# `sol2greg`: Solar Hijri to Gregorian Calendar Conversion in Stata
 #### Developed by Peyman Shahidi
-#### Last updated on 29 Tir 1402 - 20 July 2023
+#### Last updated on 29 Tir 1402 (20 July 2023)
 
 *******************************************************************************
 ## Command Description
