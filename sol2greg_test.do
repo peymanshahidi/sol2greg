@@ -22,7 +22,7 @@ adopath + "${root}"
 ********************** Solar Hijri to Gregorian conversion *********************
 *===============================================================================
 ** Use case #1: input is single variable in string format
-use "IRR_USD_exchangeRate", clear
+import delimited using "IRR_USD_historicalExRate.csv", clear case(preserve)
 cap program drop sol2greg
 
 // convert Solar Hijri date variable "dateSolarHijri" to corresponding 
@@ -42,7 +42,7 @@ count if missing(flag)
 
 *===============================================================================
 ** Use case #2: input consists of three variables in string or numeric formats
-use "IRR_USD_exchangeRate", clear
+import delimited using "IRR_USD_historicalExRate.csv", clear case(preserve)
 cap program drop sol2greg
 
 // split Solar Hijri date variable into separate year, month, day variables 
