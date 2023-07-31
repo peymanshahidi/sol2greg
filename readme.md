@@ -43,28 +43,30 @@ For further examples and more detailed description of use cases refer to test ma
 
 
 *******************************************************************************
-## Installation and Test Materials 
+## Installation
 In order to install `sol2greg`, run the following command in Stata:
 ```
 net install sol2greg, from(https://raw.githubusercontent.com/peymanshahidi/sol2greg/master)
 ```
 
-After installation, a comprehensive help file containing detailed description of `sol2greg` features along with further examples is accessible by typing:
+After installation, a comprehensive help file containing detailed description of `sol2greg` features along with examples is accessible by typing:
 ```
 help sol2greg
 ```
+Reading the help file before using the command is strongly recommended.
 
-<br>
 
-Although reading the help file before using `sol2greg` is strongly recommended, a script for testing different use cases of the command is nevertheless provided for user's convenience. The file `sol2greg_test.do` provides three examples of `sol2greg` being used for Solar Hijri to Gregorian conversion. Follow the steps below to run the test examples:
+*******************************************************************************
+## Test Materials
+The file `sol2greg_test.do` gives three examples to illustrate different use cases of `sol2greg` in Solar Hijri to Gregorian conversion. To run the test examples, follow these steps:
 
-&nbsp; 1. Download `sol2greg_test.do` from the present repository.
+&nbsp; 1. Download `sol2greg_test.do` from the current repository.
 
-&nbsp; 2. Install the `sol2greg` command (lines 15 to 17 of the `sol2greg_test.do` script does this for you).
+&nbsp; 2. Install the `sol2greg` command as instructed above (lines 15 to 17 of the `sol2greg_test.do` script do this for you).*
 
-&nbsp; 3. Run the examples in lower half of the `sol2greg_test.do` script one at a time.
+&nbsp; 3. Run the examples in the bottom half of the `sol2greg_test.do` script one at a time.
 
-Note that the dataset used in test examples is automatically copied to your working directory during installation of the command. However, if you wish to skip the installation step please make sure that a copy of `IRR_USD_histExRate.dta` dataset, available in current repository, lives in your working direcotry before running the examples.
+*: All examples use the test dataset `IRR_USD_histExRate.dta`, which can be found at the current repository. During the installation of the command, a copy of this dataset is temporarily copied into your working directory to ensure that the examples run smoothly. If you wish to skip the installation step, please make sure that a copy of `IRR_USD_histExRate.dta` exists in your present working directory for the rest of the code to work.
 
 
 *******************************************************************************
