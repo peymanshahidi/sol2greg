@@ -56,169 +56,243 @@
 *******************************************************************************
 
 program sol2greg
-		version 14.1
-		syntax varlist(min=1 max=3) [if/], gen(name)
-		
-		// since gen(name) is required in the command it is possible that the
-		// `varlist' contains the comma typed before last variable if there's no
-		// space between the entries 
-		
-		// use tokenize to remove possible extra comma
+		version 14.0
+		syntax varlist(min=1 max=3) [if/] [in/] [, SEParate(namelist min=3 max=3) ///
+													STring(name) ///
+													Datetime(name) ///
+													Format(str)]
 		tokenize `varlist'
+		
+		** return error if none of output options are specified
+		if ("`string'" == "" & "`datetime'" == "" & "`separate'" == ""){
+			display as error `"at least one output option must be specified"'
+			exit 198
+		}
 
 quietly{
-		// preserve dataset fed into the command in memory
+		** preserve original dataset and variable names
 		preserve
+		ds
+		local original_vars `r(varlist)'
 		
-		// mask the if condition
+		** mask the in and if conditions
+		if "`in'" != "" {
+			keep in `in'
+		}
 		if "`if'" != "" {
 			keep if `if'
 		}
 		
-		// keep only the calendar date variables
+		
+		** only keep Solar Hijri date variables for lower computation load
 		keep `varlist'
-		
-		// drop duplicates in Solar Hijri input dates
-		tempvar dup
-		duplicates tag `varlist', gen(`dup') 
+		tempvar redundant
+		duplicates tag `varlist', gen(`redundant') 
 		bysort `varlist': keep if _n == _N
-		drop `dup'
 		
 		
-		** check if input Gregorian date variable is
-		** a single variable in string format, or
-		** three variables in form of year, month, day
+		/* start of handling inputs */
+		** check if input Solar Hijri date variable is:
+		** 1) a single variable in Stata datetime (%t*) or string format, or 
+		** 2) three variables in form of year, month, day
 		
-		// if only 1 variable is fed into the program check if it is
-		// in string format. if so, split into three separate variables
+		** if input is a single variable check whether it is
+		** in Stata datetime (%t*) format or string format
+		local bypass_conversion " " // when input is in %t* format 
+									// no conversion is needed
 		if "`varlist'" == "`1'" {
-			ds `varlist', has(type string)
 			
-			// display error if single input is not string
-			if "`r(varlist)'" != "`varlist'" {
-				display as error ///
-					`"single Solar Hijri date input must be in string ("year/month/day") format"'
-				restore
-				exit 198
+			** if single input variable is in datetime (%t*) format 
+			** generate three separate variables for Gregorian year, month, day
+			ds `varlist', has(format %t*)
+			if "`r(varlist)'" == "`varlist'" {
+				gen gy = year(`varlist')
+				gen gm = month(`varlist')
+				gen gd = day(`varlist')
+				
+				** define bypass_conversion = true to skip conversion later
+				local bypass_conversion "True"
 			}
 			
-			// convert input Solar Hijri string into numeric variables and
-			// assign local macros
-			split `varlist', p("/" | "-" | "+"| ":" | "--" | " ") destring
-			local sy `varlist'1
-			local sm `varlist'2
-			local sd `varlist'3
+			** if single input variable is not in datetime (%t*) format
+			ds `varlist', has(format %t*)
+			if "`r(varlist)'" != "`varlist'" {
+				
+				** return error if single input variable is not in string format 
+				ds `varlist', has(type string)
+				if "`r(varlist)'" != "`varlist'" {
+					display as error ///
+						`"single input must be in either datetime (%t*) or string ("year/month/day") format"'
+					restore
+					exit 198
+				}
+				
+				** if single input variable is in string format generate three 
+				** separate variables (knowing that the input is provided in the
+				** year, month, day order)
+				ds `varlist', has(type string)
+				if "`r(varlist)'" == "`varlist'" {
+					split `varlist', p("/" | "-" | "+"| ":" | "--" | " ") destring
+				
+					** assign local macros to Solar Hijri date variables
+					rename `varlist'1 decomposed_sy
+					rename `varlist'2 decomposed_sm
+					rename `varlist'3 decomposed_sd
+					
+					** assign local macros to split Solar Hijri date variables
+					local sy decomposed_sy
+					local sm decomposed_sm
+					local sd decomposed_sd
+				}
+			}
+			
 		}
 		
-		// if more than 1 variable is fed into the program 
-		// proceed as if date decomposition is done already
+		** if more than one variable is fed into the program 
+		** proceed as if date decomposition is already done
 		if "`varlist'" != "`1'" {
-			// assign local macros to input Gregorian date variables
+		
+			** assign local macros to input Gregorian date variables
 			local sy `1'
 			local sm `2'
 			local sd `3'
 			
-			// convert any date variable in string format to numeric 
+			** convert any input date variable in string format to numeric
 			ds `varlist', has(type string)
-			destring `r(varlist)', replace float
+			destring `r(varlist)', replace float					
+		}	
+		
+		** if Solar Hijri year is not a 4-digit number return error
+		if "`bypass_conversion'" != "True" {
+			sum `sy'
+			if `r(max)' < 100 {
+				display as error "Solar Hijri year must be a 4-digit number" 
+				restore
+				exit 198
+			}
 		}
-		** end of input variable check	
+		/* end of handling inputs */
 		
 		
-		
-		// display error if Solar Hijri year is not given in 4 digits
-		sum `sy'
-		if `r(max)' < 100 {
-			display as error "Solar Hijri year must be a 4-digit number" 
-			restore
-			exit 198
-		}
-		
-		
-		
-		** start of Solar Hijri to Gregorian conversion
-		tempvar days temp leap ind dateG
-		replace `sy' = `sy' + 1595
-		gen `days' = -355668 + (365 * `sy') + (floor(`sy' / 33)) * 8 ///
-					 + floor( ( mod(`sy', 33) + 3 ) / 4 ) + `sd'
+		/* start of Solar Hijri to Gregorian calendar conversion */
+		if "`bypass_conversion'" != "True" {
+			tempvar days temp leap ind dateG
+			replace `sy' = `sy' + 1595
+			gen `days' = -355668 + (365 * `sy') + (floor(`sy' / 33)) * 8 ///
+						 + floor( ( mod(`sy', 33) + 3 ) / 4 ) + `sd'
 
-		// specify firt half or second half of the year in Solar Hijri calendar
-		replace `days' = cond(`sm' < 7, `days' + (`sm'-1)* 31, ///
-						 `days' + ((`sm' - 7) * 30) + 186)
-				  
-		gen gy = 400 * floor(`days' / 146097)
-		replace `days' = mod(`days', 146097)
- 
-		gen `temp' = `days'
-		replace `days' = cond(`temp' > 36524, `days' - 1, `days')
-		replace gy = cond(`temp' > 36524, gy + 100 * floor(`days'  / 36524), gy)
-		replace `days' = cond(`temp' > 36524, mod(`days', 36524), `days')
-		replace `days' = cond(`temp' > 36524 & `days' >= 365, `days' + 1, `days')
-		drop `temp'
-				
-		replace gy = gy + 4 * floor(`days' / 1461)
-		replace `days' = mod(`days', 1461)
-		replace gy = cond(`days' > 365, gy + floor((`days' - 1)/365), gy)
-		replace `days' = cond(`days' > 365, mod((`days' - 1), 365), `days')
+			** specify firt half or second half of the year in Solar Hijri calendar
+			replace `days' = cond(`sm' < 7, `days' + (`sm'-1)* 31, ///
+							 `days' + ((`sm' - 7) * 30) + 186)
+					  
+			gen gy = 400 * floor(`days' / 146097)
+			replace `days' = mod(`days', 146097)
+	 
+			gen `temp' = `days'
+			replace `days' = cond(`temp' > 36524, `days' - 1, `days')
+			replace gy = cond(`temp' > 36524, gy + 100 * floor(`days'  / 36524), gy)
+			replace `days' = cond(`temp' > 36524, mod(`days', 36524), `days')
+			replace `days' = cond(`temp' > 36524 & `days' >= 365, `days' + 1, `days')
+			drop `temp'
+					
+			replace gy = gy + 4 * floor(`days' / 1461)
+			replace `days' = mod(`days', 1461)
+			replace gy = cond(`days' > 365, gy + floor((`days' - 1)/365), gy)
+			replace `days' = cond(`days' > 365, mod((`days' - 1), 365), `days')
 
-		// generate day in Gregorian calendar
-		gen gd = `days' + 1
-		drop `days'
+			** generate day in Gregorian calendar
+			gen gd = `days' + 1
+			drop `days'
 
-		// determine if year is a leap year
-		gen `leap' = cond( (mod(gy, 4) == 0 & mod(gy, 100) != 0) ///
-							| mod(gy, 400) == 0, 1, 0)
-				 
-		// generate Gregorian month variable and indicator for days of month calculation
-		gen gm = 1
-		gen `ind' = 1
-		
-		// determine day and month in Gregorian calendar
-		foreach i of numlist 31 28 31 30 31 30 31 31 30 31 30 31 {
-			// indicator = 0 if Gregorian month has been 
-			// determined in previous iterations
-			replace `ind' = 0 if gd <= `i'
+			** determine if year is a leap year
+			gen `leap' = cond( (mod(gy, 4) == 0 & mod(gy, 100) != 0) ///
+								| mod(gy, 400) == 0, 1, 0)
+					 
+			** generate Gregorian month variable and 
+			** indicator for days of month calculation
+			gen gm = 1
+			gen `ind' = 1
+			
+			** determine day and month in Gregorian calendar
+			foreach i of numlist 31 28 31 30 31 30 31 31 30 31 30 31 {
+				** indicator = 0 if Gregorian month has been 
+				** determined in previous iterations
+				replace `ind' = 0 if gd <= `i'
 
-			// increase Gregorian month if indicator = 1:
-			// subtract 29 (28) for February in leap (non-leap) years,
-			// update month in Gregorian calendar
-			replace gm = cond(`leap' == 1, cond(gd > 29, gm + 1, gm), ///
-			cond(gd > 28, gm + 1, gm)) if `i' == 28 & `ind' == 1
-			replace gm = cond(gd > `i', gm + 1, gm) if `i' != 28 & `ind' == 1
-				
-			// update day in Gregorian calendar
-			replace gd = cond(`leap' == 1, cond(gd > 29, gd - 29, gd), ///
-							cond(gd > 28, gd - 28, gd)) if `i' == 28 & `ind' == 1
-			replace gd = cond(gd > `i', gd - `i', gd) if `i' != 28 & `ind' == 1
+				** increment Gregorian month if indicator = 1:
+				** subtract 29 (28) for February in leap (non-leap) years,
+				** update month in Gregorian calendar
+				replace gm = cond(`leap' == 1, cond(gd > 29, gm + 1, gm), ///
+				cond(gd > 28, gm + 1, gm)) if `i' == 28 & `ind' == 1
+				replace gm = cond(gd > `i', gm + 1, gm) if `i' != 28 & `ind' == 1
+					
+				** update day in Gregorian calendar
+				replace gd = cond(`leap' == 1, cond(gd > 29, gd - 29, gd), ///
+								cond(gd > 28, gd - 28, gd)) if `i' == 28 & `ind' == 1
+				replace gd = cond(gd > `i', gd - `i', gd) if `i' != 28 & `ind' == 1
+			}
+			drop `ind' `leap'
+			
+			if "`varlist'" != "`1'" {
+				replace `sy' = `sy' - 1595 // because we altered the Solar year
+										   // variable at the beginning of conversion
+			}
 		}
-		drop `ind' `leap'
-		
-		if "`varlist'" != "`1'" {
-			replace `sy' = `sy' - 1595 // because we altered the Solar year
-									   // variable at the beginning of conversion
-		}
-		** end of Solar Hijri to Gregorian conversion
+		format gy gm gd %02.0f
+		/* end of Solar Hijri to Gregorian calendar conversion */
 		
 		
-		
-		// generate Gregorian date variable in %td format
-		gen `gen' = mdy(gm, gd, gy)
-		format `gen' %td
-		label variable `gen' "Gregorian date"
-		drop gy gm gd
-		
-		if "`varlist'" == "`1'" {
-			drop `sy' `sm' `sd'
+		/* start of handling output(s) */
+		** single-variable output in string ("year/month/day") format
+		if "`string'" != "" {
+			tempvar gy_str gm_str gd_str
+			tostring gy, gen(`gy_str') usedisplayformat
+			tostring gm, gen(`gm_str') usedisplayformat
+			tostring gd, gen(`gd_str') usedisplayformat
+			
+			gen `string' = `gy_str' + "/" + `gm_str' + "/" + `gd_str'
+			label variable `string' "Gregorian date"
+			
+			drop `gy_str' `gm_str' `gd_str'
 		}
 		
-		// save output of conversion in a temporary file named "converted"
+		** single-variable output in Stata datetime (%td) format
+		if "`datetime'" != "" {
+			gen `datetime' = mdy(gm, gd, gy)
+			label variable `datetime' "Gregorian date"
+			
+			format `datetime' %td
+			if "`format'" != "%td" {
+				cap format `datetime' `format'
+			}
+		}
+		
+		** multiple-variable output in numeric format
+		if "`separate'" != "" {
+			label variable gy "Gregorian year"
+			label variable gm "Gregorian month"
+			label variable gd "Gregorian day"
+			rename (gy gm gd) (`separate') // namelist given in (year month day) order
+		}
+		else {
+			drop gy gm gd
+		}
+		/* end of handling output(s) */
+		
+		
+		** merge Solar Hijri date variable(s) to the original dataset
 		tempfile converted
 		save `converted', replace
-		
-		// merge Gregorian date variable to the main dataset fed into the command
 		restore
 		merge m:1 `varlist' using `converted'
 		drop _merge
+		
+		
+		** remove auxiliary variables generated for calendar conversion
+		** in the single-input case
+		if "`varlist'" == "`1'" & "`bypass_conversion'" != "True" {
+			drop `sy' `sm' `sd'
+		}
 }
 
 end
