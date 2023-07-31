@@ -73,7 +73,7 @@ In the latter case, it is assumed that user has intentionally provided entries i
 {opth st:ring(name)} creates a single string variable associated with Gregorian dates in "{bf:year/month/day}" format. Name of output variable is provided via {it:name}.
 
 {phang}
-{opth d:atetime(name)} creates a single variable in {bf:%td} datetime format. Name of output variable is provided via {it:name}. Datetime format of the variable can be changed through the {opth f:ormat(str)} option. See [][][][][][][][] Datetime
+{opth d:atetime(name)} creates a single variable in {bf:%td} datetime format. Name of output variable is provided via {it:name}. Datetime format of the variable can be changed through the {opth f:ormat(str)} option.
 
 {dlgtab:Datetime Format}
 
