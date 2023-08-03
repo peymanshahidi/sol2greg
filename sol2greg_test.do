@@ -4,33 +4,22 @@
 **					   (available at: https://d-learn.ir/p/usd-price)
 ** By:							     Peyman Shahidi
 ** Do-file Name:			       "sol2greg_test.do"    
-** Version Date:	  	      9 Mordad 1402 - 31 July 2023
+** Version Date:	  	     12 Mordad 1402 - 3 August 2023
 ********************************************************************************
 clear all
 graph drop _all
 set more off
 set scheme s1color
 
-** install (or overwrite) the "sol2greg" command
-cap ado uninstall sol2greg
-cap net install sol2greg, ///
-		from("https://raw.githubusercontent.com/peymanshahidi/sol2greg/master/")
+
+************************ Part 1: Get Required Materials ************************
+** install "sol2greg" and copy the test dataset into current working directory
+global my_url "https://raw.githubusercontent.com/peymanshahidi/sol2greg/master/"
+cap net install sol2greg, from($my_url)
+cap net get sol2greg, from($my_url)
 
 
-********************** Solar Hijri to Gregorian conversion *********************
-** The "sol2greg" command accommodates three different types of Solar Hijri date
-** inputs and generates up to three different types of Gregorian date outputs.
-**
-** Types of Solar Hijri date inputs:
-** 1. a string variable in "year/month/day" format (e.g., "1390/06/01")
-** 2. a Stata datetime variable in %t* format (e.g., 01sha1390 with value 18862)
-** 3. three separate variables; one for each of year, month, day (in this order)
-**
-** Types of Gregorian date outputs:
-** 1. a string variable in "year/month/day" format (e.g., "2011/08/23")
-** 2. a Stata datetime variable in %t* format (e.g., 23aug2011 with value 18862)
-** 3. three separate variables; one for each of year, month, day
-**
+****************** Part 2: Solar Hijri to Gregorian Conversion *****************
 ** Below three examples are given, each displaying use case of one input type
 
 *===============================================================================
@@ -42,7 +31,6 @@ sol2greg dateSolarHijri, separate(yearGregorian monthGregorian dayGregorian) ///
 							string(gregDate_str) ///
 							datetime(gregDate_datetime) format(%tC)
 sort gregDate_datetime
-
 
 *===============================================================================
 ** Example 2:
@@ -58,7 +46,6 @@ sysuse IRR_USD_histExRate, clear
 greg2sol dateGregorian, datetime(solarDate_datetime)
 sol2greg solarDate_datetime, separate(yearGregorian monthGregorian dayGregorian)
 sort yearGregorian monthGregorian dayGregorian
-
 
 *===============================================================================
 ** Example 3: 
