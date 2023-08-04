@@ -64,7 +64,7 @@ The file `sol2greg_test.do` in the current repository gives three examples to il
 
 &nbsp; 2. Run the script!
 
-The script comprises two sections. The first installs `sol2greg` and copies a test dataset into your current working direcotry. The second contains three test examples.
+The script comprises two parts. The first installs the latest version of `sol2greg` and copies a test dataset into your current working direcotry. The second contains three test examples.
 
 
 *******************************************************************************
