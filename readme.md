@@ -10,7 +10,7 @@ The `sol2greg` command takes Solar Hijri date variable(s) as input and generates
 
 *******************************************************************************
 ## Features
-`sol2greg` accommodates three types of Gregorian date inputs:
+`sol2greg` accommodates three types of Solar Hijri date inputs:
 
 &nbsp; 1. A single string variable in `"year/month/day"` format (e.g., `"1390/06/01"`) where the command is able to flexibly handle `/`, `-`, `+`, `:`,  `--`, and <code>&nbsp;</code> (white space) as delimiters.
 
